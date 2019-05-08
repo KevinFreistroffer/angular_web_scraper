@@ -1,24 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
+app.set('port', 1337 || process.env.PORT);
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../')));
-
-app.use('*', (req, res, next) => {
-	res.sendFile(express.static(path.join(__dirname, './index.html')));
+app.use(express.static(path.join(__dirname, '../src')));
+const router = require("./router")(app);
+app.get('*', (req, res, next) => {
+	res.sendFile(express.static(path.join(__dirname, '../src/index.html')));
 });
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -34,6 +35,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(app.get('port'), () => {
+	console.log(`Listening on port ${app.get('port')}`);
 });
 
 module.exports = app;
