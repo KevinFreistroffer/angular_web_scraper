@@ -8,12 +8,13 @@ const sanitize = require("sanitize-filename");
 router.post("/", async (req, res, next) => {
 	try {
 		// const urls = req.body.urls;
-		console.log(req.body);
+		console.log(req.body.urls);
 		const urls = ['https://www.google.com'];
 
-		urls.forEach(async (url) => {
-			let urlString  = sanitize(url);
-			const fileName = './files/' + urlString + '.txt';
+		req.body.urls.forEach(async (url) => {
+			let urlReference = url;
+			let sanitizedUrl  = sanitize(urlReference);
+			const fileName = './files/' + sanitizedUrl + '.txt';
 			const scrapedHTML = await rp(url);
 			if (scrapedHTML) {
 				await fsp.writeFile(
