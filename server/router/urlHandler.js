@@ -18,24 +18,12 @@ router.post("/", async (req, res, next) => {
 					"scrapedHTML",
 					{ flag: "w" },
 					(error) => {
-						console.log(error);
+						next(error);
 					}
 				);
-				res.status(200).json({ data: 'data' });
-// 				console.log(`savedFile`, savedFile, typeof savedFile);
-// 				if (typeof savedFile === "Object") {
-// 					console.log(Object.keys(savedFile));
-// 				}
-// 
-// 				if (savedFile) {
-// 					res.status(200).json({
-// 						data: savedFile
-// 					});
-// 				} else {
-// 					res.status(500).json({
-// 						data: "unable to save file"
-// 					});
-// 				}
+
+
+				res.status(200).json({ data: 'fileSaved' });
 			}
 		});
 	} catch (errror) {
