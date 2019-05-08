@@ -1,32 +1,31 @@
 const express = require("express");
 const path = require('path');
 const router = express.Router();
-const fs = require("fs");
+const fsp = require("fs").promises;
+const rp = require('request-promise');
+const sanitize = require("sanitize-filename");
 
 router.post("/", async (req, res, next) => {
 	try {
 		// const urls = req.body.urls;
 		console.log(req.body);
-		const urls = ['google.com'];
+		const urls = ['https://www.google.com'];
 
-		urls.forEach(async url => {
-			//const scrapedHTML = await someScrapeFunction();
-			const scrapedHTML = "fldafjlaks";
+		urls.forEach(async (url) => {
+			let urlString  = sanitize(url);
+			const fileName = './files/' + urlString + '.txt';
+			const scrapedHTML = await rp(url);
 			if (scrapedHTML) {
-				fs.writeFile(
-					'./files/file.txt',
-					"scrapedHTML",
-					{ flag: "w" },
-					(error) => {
-						next(error);
-					}
+				await fsp.writeFile(
+					fileName,
+					scrapedHTML,
+					{ flag: "w" }
 				);
-
-
-				res.status(200).json({ data: 'fileSaved' });
 			}
 		});
-	} catch (errror) {
+
+		res.status(200).json({ data: 'fileSaved' });
+	} catch (error) {
 		console.log(`An error occured /urlHandler`, error);
 		next(error);
 	}
