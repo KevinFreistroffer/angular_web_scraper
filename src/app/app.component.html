@@ -1,11 +1,13 @@
 <div id="app">
   <form (ngSubmit)="handleOnSubmit()">
-    <div class="form-group" *ngFor="let url in urls; let i = index">
-      <input type="text" formControl="url" (change)="handleOnChange(event)">
+    <!-- ngFor uses of not in ;) -->
+    <div class="form-group" *ngFor="let url of urls; let i = index">
+<!-- a quick label and using the default values would be preferable -->
+      {{ "entry: " + i }}<input type="text" formControl="url" value="{{ url }}"  (change)="handleOnChange(event)">
     </div>
 
     <div class="form-group">
-      <button type="buttom" [disabled]="!formIsValid" (click)="handleOnSubmit()"></button>
+      <button type="buttom" [disabled]="!formIsValid" (click)="handleOnSubmit()">SOME VALUE?</button>
     </div>
   </form>
 </div>

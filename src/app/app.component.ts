@@ -19,13 +19,13 @@ export class AppComponent {
   	'google.com',
   	'google.com'
   ];
-
+// validation check never implemented
   formIsValid: boolean = false;
 
   constructor() {
 
   }
-
+// The submit doesnt call anything?
   handleOnSubmit() {
   	// If no inputs have a value 
   	// this.formIsValid = false

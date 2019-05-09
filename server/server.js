@@ -15,10 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../src')));
-app.use(cors({
-	origin: 'http://localhost:4200'
-}))
-const router = require("./router")(app);
+// probably wouldnt want to limit cors to the client app since one requirement was to be able to hit this using cURL
+app.use(cors());
+// routes dependency dont seem to be working 
+const router = require("./router")(app);i
+// GET seems to be the only working route, and only seems to fetch and return the Angular app html
 app.get('*', (req, res, next) => {
 	res.sendFile(express.static(path.join(__dirname, '../src/index.html')));
 });
